@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html><body><canvas id="c"></canvas><script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+c.width = 800; c.height = 600;
+// Gradient background
+const grad = ctx.createLinearGradient(0,0,800,600);
+grad.addColorStop(0, '#667eea');
+grad.addColorStop(1, '#764ba2');
+ctx.fillStyle = grad;
+ctx.fillRect(0,0,800,600);
+// Text
+ctx.fillStyle = '#fff';
+ctx.font = 'bold 48px sans-serif';
+ctx.textAlign = 'center';
+ctx.fillText('AI Prompt Placeholder', 400, 280);
+ctx.font = '24px sans-serif';
+ctx.fillText('Demo Marketplace', 400, 340);
+// Download
+const link = document.createElement('a');
+link.download = 'prompt-placeholder.png';
+link.href = c.toDataURL();
+link.click();
+</script></body></html>

@@ -1,0 +1,7 @@
+SAMPLE PROMPT FILE
+
+This is a demo prompt file for testing purposes.
+In production, this would contain the actual prompt text.
+
+Example:
+"You are an expert [ROLE]. Help me create [GOAL]..."
