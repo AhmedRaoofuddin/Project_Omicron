@@ -61,7 +61,7 @@ const PromptDetailsPage = ({
     }
   }, [publishAbleKey, prompt]);
 
-  const newPaymentIntent = async ({ amount }: { amount: Number }) => {
+  const newPaymentIntent = async ({ amount }: { amount: number }) => {
     const paymentIntent = await stripePaymentIntent({ amount });
     setClientSecret(paymentIntent?.client_secret);
   };

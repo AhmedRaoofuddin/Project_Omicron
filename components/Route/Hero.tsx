@@ -56,10 +56,10 @@ const Hero = (props: Props) => {
   }
 
   return (
-    <div className="w-full md:min-h-screen flex items-center justify-center">
+    <div className="w-full md:min-h-screen flex items-center justify-center relative z-10">
       <div>
-        <h1 className="font-Monserrat text-4xl py-5 xl:text-7xl 2xl:text-8xl font-[700] text-center xl:leading-[80px] 2xl:leading-[100px] sm:mt-20">
-          Make <span className="text-[#64FF4B]">prompts</span> work <br /> with your{" "}
+        <h1 className="font-Monserrat text-4xl py-5 xl:text-7xl 2xl:text-8xl font-[700] text-center xl:leading-[80px] 2xl:leading-[100px] sm:mt-20 text-[var(--text-primary)]">
+          Make <span className="text-[var(--accent-primary)] dark:text-[#64FF4B]">prompts</span> work <br /> with your{" "}
           <br /> creativity
         </h1>
         <div className="md:mt-5">

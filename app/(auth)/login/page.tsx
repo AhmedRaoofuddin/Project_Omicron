@@ -89,13 +89,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-gray-800/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-700">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-[var(--card-bg)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--border-color)] shadow-xl">
         <div>
-          <h2 className="text-center text-3xl font-bold text-white">
-            Welcome to <span className="text-[#64ff4c]">PromptPlace</span>
+          <h2 className="text-center text-3xl font-bold text-[var(--text-primary)]">
+            Welcome to <span className="text-[var(--accent-primary)] dark:text-[#64ff4c]">PromptPlace</span>
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-400">
+          <p className="mt-2 text-center text-sm text-[var(--text-secondary)]">
             Sign in to your account
           </p>
         </div>
@@ -110,8 +110,9 @@ export default function LoginPage() {
                 placeholder="you@example.com"
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
-                  inputWrapper: "border-gray-600 data-[hover=true]:border-gray-500",
+                  input: "text-[var(--text-primary)]",
+                  inputWrapper: "border-[var(--border-color)] data-[hover=true]:border-[var(--accent-primary)]",
+                  label: "text-[var(--text-secondary)]",
                 }}
                 isInvalid={!!errors.email}
                 errorMessage={errors.email?.message}
@@ -126,8 +127,9 @@ export default function LoginPage() {
                 placeholder="Enter your password"
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
-                  inputWrapper: "border-gray-600 data-[hover=true]:border-gray-500",
+                  input: "text-[var(--text-primary)]",
+                  inputWrapper: "border-[var(--border-color)] data-[hover=true]:border-[var(--accent-primary)]",
+                  label: "text-[var(--text-secondary)]",
                 }}
                 isInvalid={!!errors.password}
                 errorMessage={errors.password?.message}
@@ -138,7 +140,7 @@ export default function LoginPage() {
           <div>
             <Button
               type="submit"
-              className="w-full bg-[#64ff4c] text-black font-semibold hover:bg-[#52cc3d] transition-colors"
+              className="w-full bg-[var(--accent-primary)] text-white font-semibold hover:bg-[var(--accent-hover)] transition-colors dark:bg-[#64ff4c] dark:text-black"
               isLoading={loading}
               size="lg"
             >
@@ -147,9 +149,9 @@ export default function LoginPage() {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-[var(--text-secondary)]">
               Don&apos;t have an account?{' '}
-              <Link href="/signup" className="text-[#64ff4c] hover:underline">
+              <Link href="/signup" className="text-[var(--accent-primary)] dark:text-[#64ff4c] hover:underline font-medium">
                 Sign up
               </Link>
             </p>
@@ -157,11 +159,11 @@ export default function LoginPage() {
         </form>
 
         {/* Demo Logins */}
-        <div className="mt-6 border-t border-gray-700 pt-6">
-          <p className="text-center text-xs text-gray-500 mb-3">Quick demo access:</p>
+        <div className="mt-6 border-t border-[var(--border-color)] pt-6">
+          <p className="text-center text-xs text-[var(--text-secondary)] mb-3">Quick demo access:</p>
           <div className="grid grid-cols-3 gap-2">
             <button
-              className="flex items-center justify-center gap-2 px-3 py-2 text-sm border border-gray-600 rounded-lg hover:border-blue-500 hover:bg-blue-500/10 transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-3 py-2 text-sm border border-[var(--border-color)] rounded-lg hover:border-blue-500 hover:bg-blue-500/10 transition-colors disabled:opacity-50 text-[var(--text-primary)]"
               onClick={() => handleDemoLogin('buyer')}
               disabled={loading}
             >
@@ -169,7 +171,7 @@ export default function LoginPage() {
               <span>Buyer</span>
             </button>
             <button
-              className="flex items-center justify-center gap-2 px-3 py-2 text-sm border border-gray-600 rounded-lg hover:border-green-500 hover:bg-green-500/10 transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-3 py-2 text-sm border border-[var(--border-color)] rounded-lg hover:border-green-500 hover:bg-green-500/10 transition-colors disabled:opacity-50 text-[var(--text-primary)]"
               onClick={() => handleDemoLogin('seller')}
               disabled={loading}
             >
@@ -177,7 +179,7 @@ export default function LoginPage() {
               <span>Seller</span>
             </button>
             <button
-              className="flex items-center justify-center gap-2 px-3 py-2 text-sm border border-gray-600 rounded-lg hover:border-purple-500 hover:bg-purple-500/10 transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-2 px-3 py-2 text-sm border border-[var(--border-color)] rounded-lg hover:border-purple-500 hover:bg-purple-500/10 transition-colors disabled:opacity-50 text-[var(--text-primary)]"
               onClick={() => handleDemoLogin('admin')}
               disabled={loading}
             >

@@ -12,7 +12,8 @@ const Footer = (props: Props) => {
         <div>
           <Link href={"/"}>
             <h1 className="font-Inter text-3xl cursor-pointer">
-              <span className="text-[#64ff4c]">Prompt</span>Place
+              <span className="text-[var(--accent-primary)] dark:text-[#64ff4c]">Prompt</span>
+              <span className="text-[var(--text-primary)]">Place</span>
             </h1>
           </Link>
         </div>
@@ -21,7 +22,7 @@ const Footer = (props: Props) => {
             <li>
               <Link
                 href="/"
-                className={`${styles.label} hover:text-[#64ff4b] duration-200 transition px-4`}
+                className={`${styles.label} hover:text-[var(--accent-primary)] duration-200 transition px-4`}
               >
                 Home
               </Link>
@@ -29,15 +30,15 @@ const Footer = (props: Props) => {
             <li>
               <Link
                 href="/marketplace"
-                className={`${styles.label} hover:text-[#64ff4b] duration-200 transition px-4`}
+                className={`${styles.label} hover:text-[var(--accent-primary)] duration-200 transition px-4`}
               >
                 MarketPlace
               </Link>
             </li>
             <li>
               <Link
-                href="/contact-us"
-                className={`${styles.label} hover:text-[#64ff4b] duration-200 transition px-4`}
+                href="/contact"
+                className={`${styles.label} hover:text-[var(--accent-primary)] duration-200 transition px-4`}
               >
                 Contact Us
               </Link>
@@ -45,8 +46,8 @@ const Footer = (props: Props) => {
           </ul>
         </div>
       </div>
-      <p className={`${styles.paragraph} text-center`}>
-        Copyright © 2023 Becodemy . All Rights Reserved
+      <p className={`${styles.paragraph} text-center text-[var(--text-secondary)]`}>
+        Copyright © 2025 PromptPlace. All Rights Reserved
       </p>
       <br />
       <br />

@@ -31,7 +31,7 @@ const PromptDetailsCard = ({
   
 
   return (
-    <div className="bg-[#1211023] p-3 w-full min-h-[50vh] shadow rounded-xl mt-8">
+    <div className="bg-[var(--card-bg)] dark:bg-[#1211023] p-3 w-full min-h-[50vh] shadow rounded-xl mt-8 border border-[var(--border-color)]">
       <div className="w-full flex flex-wrap">
         <div className="md:w-[48%] w-full m-2">
           <div>
@@ -61,19 +61,19 @@ const PromptDetailsCard = ({
           </div>
         </div>
         <div className="md:w-[48%] w-full m-2 p-2">
-          <h1 className={`${styles.label} !text-2xl font-Monserrat`}>
+          <h1 className={`${styles.label} !text-2xl font-Monserrat text-[var(--text-primary)]`}>
             {promptData?.name}
           </h1>
           <br />
-          <Chip className="bg-[#1f2d2b] rounded-md p-3 h-[35px]">
+          <Chip className="bg-[var(--bg-secondary)] dark:bg-[#1f2d2b] rounded-md p-3 h-[35px] border border-[var(--border-color)]">
             <span
-              className={`${styles.label} !text-2xl !text-[#64ff4b] font-Monserrat`}
+              className={`${styles.label} !text-2xl !text-[var(--accent-primary)] dark:!text-[#64ff4b] font-Monserrat`}
             >
               {promptDiscount}%
             </span>
           </Chip>
           <span
-            className={`${styles.label} !text-2xl pl-2 text-white font-Monserat`}
+            className={`${styles.label} !text-2xl pl-2 text-[var(--text-primary)] font-Monserat`}
           >
             Off
           </span>
@@ -85,7 +85,7 @@ const PromptDetailsCard = ({
                 ${promptData?.estimatedPrice}
               </span>
               <span
-                className={`${styles.label} inline-block pt-4 !text-xl text-white pl-3`}
+                className={`${styles.label} inline-block pt-4 !text-xl text-[var(--text-primary)] pl-3`}
               >
                 ${promptData?.price}
               </span>
@@ -99,7 +99,7 @@ const PromptDetailsCard = ({
           <br />
           <div className="w-full">
             <span
-              className={`${styles.label} !text-2xl pl-2 text-white font-Monserrat`}
+              className={`${styles.label} !text-2xl pl-2 text-[var(--text-primary)] font-Monserrat`}
             >
               Tags
             </span>
@@ -107,11 +107,11 @@ const PromptDetailsCard = ({
             <div className="w-full flex items-center flex-wrap my-2">
               {tagsList.map((tag: string) => (
                 <Chip
-                  className="bg-[#1e1c2f] rounded-full h-[35px] mr-2 my-2 2xl:mr-4 cursor-pointer"
+                  className="bg-[var(--bg-secondary)] dark:bg-[#1e1c2f] rounded-full h-[35px] mr-2 my-2 2xl:mr-4 cursor-pointer border border-[var(--border-color)]"
                   key={tag}
                 >
                   <span
-                    className={`${styles.label} !text-xl text-white font-Monserrat`}
+                    className={`${styles.label} !text-xl text-[var(--text-primary)] font-Monserrat`}
                   >
                     {tag}
                   </span>
@@ -122,7 +122,7 @@ const PromptDetailsCard = ({
             <Button
               onClick={() => setOpen(!open)}
               radius="full"
-              className={`${styles.button} h-[45px] font-[400] bg-[#64ff4b] !text-indigo-900 md:ml-2`}
+              className={`${styles.button} h-[45px] font-[400] bg-[var(--accent-primary)] hover:bg-[var(--accent-hover)] dark:bg-[#64ff4b] !text-white dark:!text-indigo-900 md:ml-2 transition-colors`}
             >
               Buy now ${promptData?.price}
             </Button>

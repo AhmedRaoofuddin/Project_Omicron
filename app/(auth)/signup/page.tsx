@@ -45,13 +45,13 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-gray-800/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-700">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-[var(--card-bg)] backdrop-blur-sm p-8 rounded-2xl border border-[var(--border-color)] shadow-xl">
         <div>
-          <h2 className="text-center text-3xl font-bold text-white">
-            Join <span className="text-[#64ff4c]">PromptPlace</span>
+          <h2 className="text-center text-3xl font-bold text-[var(--text-primary)]">
+            Join <span className="text-[var(--accent-primary)] dark:text-[#64ff4c]">PromptPlace</span>
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-400">
+          <p className="mt-2 text-center text-sm text-[var(--text-secondary)]">
             Create your account
           </p>
         </div>
@@ -66,8 +66,9 @@ export default function SignupPage() {
                 placeholder="John"
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
-                  inputWrapper: "border-gray-600 data-[hover=true]:border-gray-500",
+                  input: "text-[var(--text-primary)]",
+                  inputWrapper: "border-[var(--border-color)] data-[hover=true]:border-[var(--accent-primary)]",
+                  label: "text-[var(--text-secondary)]",
                 }}
                 isInvalid={!!errors.firstName}
                 errorMessage={errors.firstName?.message}
@@ -80,8 +81,9 @@ export default function SignupPage() {
                 placeholder="Doe"
                 variant="bordered"
                 classNames={{
-                  input: "text-white",
-                  inputWrapper: "border-gray-600 data-[hover=true]:border-gray-500",
+                  input: "text-[var(--text-primary)]",
+                  inputWrapper: "border-[var(--border-color)] data-[hover=true]:border-[var(--accent-primary)]",
+                  label: "text-[var(--text-secondary)]",
                 }}
                 isInvalid={!!errors.lastName}
                 errorMessage={errors.lastName?.message}
@@ -95,8 +97,9 @@ export default function SignupPage() {
               placeholder="you@example.com"
               variant="bordered"
               classNames={{
-                input: "text-white",
-                inputWrapper: "border-gray-600 data-[hover=true]:border-gray-500",
+                input: "text-[var(--text-primary)]",
+                inputWrapper: "border-[var(--border-color)] data-[hover=true]:border-[var(--accent-primary)]",
+                label: "text-[var(--text-secondary)]",
               }}
               isInvalid={!!errors.email}
               errorMessage={errors.email?.message}
@@ -109,8 +112,9 @@ export default function SignupPage() {
               placeholder="At least 6 characters"
               variant="bordered"
               classNames={{
-                input: "text-white",
-                inputWrapper: "border-gray-600 data-[hover=true]:border-gray-500",
+                input: "text-[var(--text-primary)]",
+                inputWrapper: "border-[var(--border-color)] data-[hover=true]:border-[var(--accent-primary)]",
+                label: "text-[var(--text-secondary)]",
               }}
               isInvalid={!!errors.password}
               errorMessage={errors.password?.message}
@@ -123,8 +127,9 @@ export default function SignupPage() {
               placeholder="Re-enter your password"
               variant="bordered"
               classNames={{
-                input: "text-white",
-                inputWrapper: "border-gray-600 data-[hover=true]:border-gray-500",
+                input: "text-[var(--text-primary)]",
+                inputWrapper: "border-[var(--border-color)] data-[hover=true]:border-[var(--accent-primary)]",
+                label: "text-[var(--text-secondary)]",
               }}
               isInvalid={!!errors.confirmPassword}
               errorMessage={errors.confirmPassword?.message}
@@ -134,7 +139,7 @@ export default function SignupPage() {
           <div>
             <Button
               type="submit"
-              className="w-full bg-[#64ff4c] text-black font-semibold hover:bg-[#52cc3d] transition-colors"
+              className="w-full bg-[var(--accent-primary)] text-white font-semibold hover:bg-[var(--accent-hover)] transition-colors dark:bg-[#64ff4c] dark:text-black"
               isLoading={loading}
               size="lg"
             >
@@ -143,9 +148,9 @@ export default function SignupPage() {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-[var(--text-secondary)]">
               Already have an account?{' '}
-              <Link href="/login" className="text-[#64ff4c] hover:underline">
+              <Link href="/login" className="text-[var(--accent-primary)] dark:text-[#64ff4c] hover:underline font-medium">
                 Sign in
               </Link>
             </p>

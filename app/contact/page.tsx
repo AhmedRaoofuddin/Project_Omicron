@@ -31,7 +31,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <Header activeItem={4} user={null} isSellerExist={false} />
       
       <div className="w-full pt-24 pb-16">
@@ -39,9 +39,9 @@ const ContactPage = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className={`${styles.heading} mb-4`}>
-              Get in <span className="text-[#64ff4c]">Touch</span>
+              Get in <span className="text-[var(--accent-primary)] dark:text-[#64ff4c]">Touch</span>
             </h1>
-            <p className="text-gray-400 text-lg">
+            <p className="text-[var(--text-secondary)] text-lg">
               Have questions? We&apos;d love to hear from you. Send us a message!
             </p>
           </div>
@@ -49,16 +49,16 @@ const ContactPage = () => {
           <div className="grid md:grid-cols-2 gap-12">
             {/* Contact Info */}
             <div>
-              <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
+              <h2 className="text-2xl font-semibold mb-6 text-[var(--text-primary)]">Contact Information</h2>
               
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-[#16c252]/10">
-                    <Mail className="w-5 h-5 text-[#16c252]" />
+                  <div className="p-3 rounded-lg bg-[var(--accent-primary)]/10">
+                    <Mail className="w-5 h-5 text-[var(--accent-primary)]" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Email</h3>
-                    <p className="text-gray-400">support@promptplace.com</p>
+                    <h3 className="font-semibold mb-1 text-[var(--text-primary)]">Email</h3>
+                    <p className="text-[var(--text-secondary)]">support@promptplace.com</p>
                   </div>
                 </div>
                 
@@ -67,8 +67,8 @@ const ContactPage = () => {
                     <MessageCircle className="w-5 h-5 text-blue-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Live Chat</h3>
-                    <p className="text-gray-400">Available 24/7</p>
+                    <h3 className="font-semibold mb-1 text-[var(--text-primary)]">Live Chat</h3>
+                    <p className="text-[var(--text-secondary)]">Available 24/7</p>
                   </div>
                 </div>
                 
@@ -77,15 +77,15 @@ const ContactPage = () => {
                     <Globe className="w-5 h-5 text-purple-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Community</h3>
-                    <p className="text-gray-400">Join our Discord server</p>
+                    <h3 className="font-semibold mb-1 text-[var(--text-primary)]">Community</h3>
+                    <p className="text-[var(--text-secondary)]">Join our Discord server</p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-8 p-6 bg-gray-900/50 rounded-lg border border-gray-800">
-                <h3 className="font-semibold mb-2 text-[#16c252]">Quick Response</h3>
-                <p className="text-gray-400 text-sm">
+              <div className="mt-8 p-6 bg-[var(--card-bg)] dark:bg-gray-900/50 rounded-lg border border-[var(--border-color)]">
+                <h3 className="font-semibold mb-2 text-[var(--accent-primary)]">Quick Response</h3>
+                <p className="text-[var(--text-secondary)] text-sm">
                   We typically respond within 24 hours. For urgent matters,
                   please use our live chat feature.
                 </p>
@@ -103,8 +103,9 @@ const ContactPage = () => {
                   required
                   variant="bordered"
                   classNames={{
-                    input: "text-white",
-                    inputWrapper: "border-gray-700 bg-gray-900/50",
+                    input: "text-[var(--text-primary)]",
+                    inputWrapper: "border-[var(--border-color)] bg-[var(--input-bg)]",
+                    label: "text-[var(--text-secondary)]",
                   }}
                 />
 
@@ -117,8 +118,9 @@ const ContactPage = () => {
                   required
                   variant="bordered"
                   classNames={{
-                    input: "text-white",
-                    inputWrapper: "border-gray-700 bg-gray-900/50",
+                    input: "text-[var(--text-primary)]",
+                    inputWrapper: "border-[var(--border-color)] bg-[var(--input-bg)]",
+                    label: "text-[var(--text-secondary)]",
                   }}
                 />
 
@@ -130,8 +132,9 @@ const ContactPage = () => {
                   required
                   variant="bordered"
                   classNames={{
-                    input: "text-white",
-                    inputWrapper: "border-gray-700 bg-gray-900/50",
+                    input: "text-[var(--text-primary)]",
+                    inputWrapper: "border-[var(--border-color)] bg-[var(--input-bg)]",
+                    label: "text-[var(--text-secondary)]",
                   }}
                 />
 
@@ -144,14 +147,15 @@ const ContactPage = () => {
                   variant="bordered"
                   minRows={5}
                   classNames={{
-                    input: "text-white",
-                    inputWrapper: "border-gray-700 bg-gray-900/50",
+                    input: "text-[var(--text-primary)]",
+                    inputWrapper: "border-[var(--border-color)] bg-[var(--input-bg)]",
+                    label: "text-[var(--text-secondary)]",
                   }}
                 />
 
                 <Button
                   type="submit"
-                  className="w-full bg-[#64ff4c] text-black font-semibold hover:bg-[#52cc3d] transition-colors h-12"
+                  className="w-full bg-[var(--accent-primary)] text-white font-semibold hover:bg-[var(--accent-hover)] transition-colors h-12 dark:bg-[#64ff4c] dark:text-black"
                   isLoading={loading}
                   size="lg"
                 >

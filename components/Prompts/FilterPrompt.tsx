@@ -1,5 +1,4 @@
 "use client";
-import { styles } from "@/utils/styles";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 
@@ -24,19 +23,20 @@ const FilterPrompt = ({ totalPrompts, setPrompts }: Props) => {
   };
 
   return (
-    <div className="w-full flex rounded shadow my-5">
+    <div className="w-full flex flex-wrap gap-3 rounded shadow my-5">
       {categories.map((i, index) => (
         <Button
-          className={`h-[32px] px-3 rounded-2xl mr-8 ${
-            selected === i ? "bg-[#3ab05b]" : "bg-[#2251ac]"
+          className={`h-[40px] px-6 rounded-full font-medium transition-all duration-200 ${
+            selected === i 
+              ? "bg-[#16c252] dark:bg-[#16c252] text-white shadow-lg scale-105" 
+              : "bg-white dark:bg-[#1a1625] text-[#0f172a] dark:text-white border-2 border-gray-300 dark:border-[#ffffff32] hover:border-[#16c252] dark:hover:border-[#16c252] hover:scale-105"
           }`}
           key={index}
           onClick={(e) => handleFilter(i)}
         >
-          <p className={`${styles.paragraph} text-white`}>{i}</p>
+          {i}
         </Button>
       ))}
-      <br />
     </div>
   );
 };

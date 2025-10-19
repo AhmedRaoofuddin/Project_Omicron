@@ -65,13 +65,13 @@ const MarketPlaceRouter = ({
   return (
     <>
       <div className="shop-banner">
-        <Header activeItem={2} user={user} isSellerExist={isSellerExist} />
+        <Header activeItem={2} user={user} isSellerExist={isSellerExist} hasDarkBanner={true} />
         <ShopBanner title="Our Shop" />
       </div>
-      <div>
+      <div className="bg-[var(--bg-primary)] min-h-screen">
         <div className="w-[95%] md:w-[90%] xl:w-[85%] 2xl:w-[80%] m-auto">
           <div>
-            <div className="w-full">
+            <div className="w-full pt-8">
               <FilterPrompt
                 setPrompts={setPrompts}
                 totalPrompts={totalPrompts}
@@ -79,10 +79,8 @@ const MarketPlaceRouter = ({
             </div>
             <div className="w-full flex flex-wrap mt-5">
               {loading ? (
-                [...new Array(8)].map((i) => (
-                  <>
-                    <PromptCardLoader />
-                  </>
+                [...new Array(8)].map((i, index) => (
+                  <PromptCardLoader key={index} />
                 ))
               ) : (
                 <>
@@ -93,7 +91,7 @@ const MarketPlaceRouter = ({
                 </>
               )}
             </div>
-            <div className="w-full flex items-center justify-center mt-5">
+            <div className="w-full flex items-center justify-center mt-5 mb-8">
               {!loading && (
                 <Pagination
                   loop
@@ -102,13 +100,16 @@ const MarketPlaceRouter = ({
                   initialPage={initialPage}
                   classNames={{
                     wrapper: "mx-2",
-                    item: "mx-2",
+                    item: "mx-2 bg-[var(--card-bg)] dark:bg-gray-800 text-[var(--text-primary)] border border-[var(--border-color)]",
+                    cursor: "bg-[var(--accent-primary)] dark:bg-[#16c252] text-white font-semibold",
+                    next: "bg-[var(--card-bg)] dark:bg-gray-800 text-[var(--text-primary)] border border-[var(--border-color)]",
+                    prev: "bg-[var(--card-bg)] dark:bg-gray-800 text-[var(--text-primary)] border border-[var(--border-color)]",
                   }}
                   onChange={setInitialPage}
                 />
               )}
             </div>
-            <Divider className="bg-[#ffffff14] mt-5" />
+            <Divider className="bg-[var(--border-color)] mt-5" />
             <Footer />
           </div>
         </div>

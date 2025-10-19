@@ -4,7 +4,7 @@ import React from "react";
 
 const ShopBanner = ({ title }: { title: string }) => {
   return (
-    <div className="w-full h-full flex items-center justify-center relative">
+    <div className="w-full h-full flex items-center justify-center relative z-10">
       <div>
         <Image
           src={
@@ -17,7 +17,7 @@ const ShopBanner = ({ title }: { title: string }) => {
         />
       </div>
       <h4
-        className={`${styles.heading} font-Monserrat xl:text-6xl 2xl:text-7xl`}
+        className="text-4xl xl:text-6xl 2xl:text-7xl font-[700] font-Monserrat text-white drop-shadow-lg"
       >
         {title}
       </h4>

@@ -10,9 +10,9 @@ const Page = async ({ params }: { params: any }) => {
   return (
     <div>
       <PromptDetailsPage
-        user={data?.user}
+        user={data?.user as any}
         isSellerExist={data?.shop ? true : false}
-        publishAbleKey={publishAbleKey}
+        publishAbleKey={publishAbleKey || ''}
         promptId={resolvedParams.id}
       />
     </div>

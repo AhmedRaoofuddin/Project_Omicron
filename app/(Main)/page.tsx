@@ -8,7 +8,7 @@ const Page = async () => {
   return (
     <div>
       <RoutePage
-        user={data?.user}
+        user={data?.user as any}
         isSellerExist={data?.shop ? true : false}
       />
     </div>

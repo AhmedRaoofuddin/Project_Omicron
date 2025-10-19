@@ -4,7 +4,7 @@ const PromptCard = () => {
   return (
     <Card
       radius="lg"
-      className="w-full md:w-[31%] 2xl:w-[23%] p-4 bg-[#130f23] m-3"
+      className="w-full md:w-[31%] 2xl:w-[23%] p-4 bg-white dark:bg-[#130f23] m-3 border-2 border-gray-200 dark:border-[#ffffff32]"
       style={{ height: "410px" }}
     >
       <div className="relative">

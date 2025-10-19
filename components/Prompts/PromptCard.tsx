@@ -22,7 +22,7 @@ const PromptCard = ({ prompt }: Props) => {
   return (
     <Card
       radius="lg"
-      className="flex flex-col w-full md:w-[31%] 2xl:w-[23%] min-h-[380px] p-0 bg-[#14101a] m-3 border border-white/10 overflow-visible"
+      className="flex flex-col w-full md:w-[31%] 2xl:w-[23%] min-h-[380px] p-0 bg-white dark:bg-[#14101a] m-3 border-2 border-gray-200 dark:border-[#ffffff32] overflow-visible transition-all duration-300 hover:shadow-2xl hover:border-[#16c252]"
     >
       {/* Image Area */}
       <div className="relative w-full h-[200px] rounded-xl overflow-hidden">
@@ -36,7 +36,7 @@ const PromptCard = ({ prompt }: Props) => {
         
         {/* Category Badge */}
         <div className="absolute left-3 bottom-3 z-10 pointer-events-none select-none">
-          <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium bg-black/70 text-white backdrop-blur-sm">
+          <div className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium bg-black/70 dark:bg-black/70 text-white backdrop-blur-sm">
             {categoryIcons[prompt?.category] || <Sparkles className="w-4 h-4" />}
             <span>{prompt?.category}</span>
           </div>
@@ -47,15 +47,15 @@ const PromptCard = ({ prompt }: Props) => {
       <div className="flex flex-col gap-3 p-4 flex-1">
         {/* Title and Price */}
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-base font-semibold text-white line-clamp-2 flex-1">
+          <h3 className="text-base font-semibold text-[#0f172a] dark:text-white line-clamp-2 flex-1">
             {prompt?.name}
           </h3>
-          <p className="text-base font-bold text-[#16c252] whitespace-nowrap">
+          <p className="text-lg font-bold text-[#16c252] dark:text-[#16c252] whitespace-nowrap">
             ${prompt?.price}
           </p>
         </div>
 
-        <Divider className="bg-white/10" />
+        <Divider className="bg-gray-200 dark:bg-[#ffffff32]" />
 
         {/* Shop Info and Rating */}
         <div className="flex items-center justify-between gap-2">
@@ -66,7 +66,7 @@ const PromptCard = ({ prompt }: Props) => {
               className="w-7 h-7 flex-shrink-0"
               isBordered
             />
-            <span className="text-sm text-zinc-300 truncate">
+            <span className="text-sm text-[#475569] dark:text-[#b4b4b4] truncate font-medium">
               @{prompt?.shop?.name}
             </span>
           </div>

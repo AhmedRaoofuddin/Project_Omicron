@@ -19,7 +19,8 @@ export async function POST(request: Request) {
     const files: File[] = [];
     
     // Extract all files from form data
-    for (const [key, value] of formData.entries()) {
+    const entries = Array.from(formData.entries());
+    for (const [key, value] of entries) {
       if (value instanceof File) {
         files.push(value);
       }

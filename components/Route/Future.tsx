@@ -21,7 +21,7 @@ const Future = (props: Props) => {
       <div className="col-span-1 w-full flex justify-center items-center">
         <div className="2xl:w-[60%]">
           <Button
-            className={`${styles.button} mb-[30px] h-[37px] bg-[#12211f]`}
+            className={`${styles.button} mb-[30px] h-[37px] bg-[var(--bg-secondary)] dark:bg-[#12211f] border border-[var(--border-color)]`}
           >
             Future
           </Button>

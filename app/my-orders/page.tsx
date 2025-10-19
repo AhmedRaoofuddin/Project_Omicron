@@ -5,7 +5,7 @@ const Page = async () => {
   const userData = await getUser();
   return (
     <div>
-      <UserAllOrders user={userData?.user}  isSellerExist={userData?.shop ? true : false} />
+      <UserAllOrders user={userData?.user as any}  isSellerExist={userData?.shop ? true : false} />
     </div>
   );
 };

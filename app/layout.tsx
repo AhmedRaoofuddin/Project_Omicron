@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { config } from "@/lib/config";
 import DemoModeBadge from "@/components/Layout/DemoModeBadge";
 import { AuthProvider } from "@/providers/auth-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 // Demo banner removed - was too noisy
 
@@ -32,13 +33,15 @@ export default function RootLayout({
     return (
       <html lang="en" suppressHydrationWarning>
         <body className={`${inter.variable} ${monserrat.variable}`}>
-          <AuthProvider>
-            <Provider>
-              <Toaster position="top-center" reverseOrder={false} />
-              {children}
-              <DemoModeBadge />
-            </Provider>
-          </AuthProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+            <AuthProvider>
+              <Provider>
+                <Toaster position="top-center" reverseOrder={false} />
+                {children}
+                <DemoModeBadge />
+              </Provider>
+            </AuthProvider>
+          </ThemeProvider>
         </body>
       </html>
     );
@@ -49,10 +52,12 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`${inter.variable} ${monserrat.variable}`}>
-          <Provider>
-            <Toaster position="top-center" reverseOrder={false} />
-            {children}
-          </Provider>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+            <Provider>
+              <Toaster position="top-center" reverseOrder={false} />
+              {children}
+            </Provider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
