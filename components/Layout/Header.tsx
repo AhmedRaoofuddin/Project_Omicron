@@ -9,6 +9,7 @@ import { UserProfile } from "@clerk/nextjs";
 import DropDown from "./DropDown";
 import DemoAuthButton from "../Auth/DemoAuthButton";
 import ThemeToggle from "./ThemeToggle";
+import SearchBar from "../Search/SearchBar";
 
 const isDemoMode = typeof window !== 'undefined' 
   ? window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -75,9 +76,7 @@ const Header = ({ user, activeItem, isSellerExist, hasDarkBanner = false }: Prop
           <Navigation activeItem={activeItem} isScrolled={active} hasDarkBanner={hasDarkBanner} />
         </div>
         <div className="flex items-center ml-10 gap-4">
-          <AiOutlineSearch className={`text-[25px] cursor-pointer transition-colors ${
-            !active && hasDarkBanner ? "text-white drop-shadow-md" : "text-[var(--text-primary)]"
-          }`} />
+          <SearchBar className="hidden md:block" />
           <ThemeToggle />
           {isDemoMode ? (
             <DemoAuthButton />
@@ -143,8 +142,11 @@ const Header = ({ user, activeItem, isSellerExist, hasDarkBanner = false }: Prop
             onClick={handleClose}
             id="screen"
           >
-            <div className="fixed bg-[var(--bg-secondary)] h-screen top-0 right-0 w-[60%] z-[160] border-l border-[var(--border-color)] shadow-2xl">
+            <div className="fixed bg-[var(--bg-secondary)] h-screen top-0 right-0 w-[80%] z-[160] border-l border-[var(--border-color)] shadow-2xl">
               <div className="mt-20 p-5">
+                <div className="mb-6">
+                  <SearchBar mobile={true} />
+                </div>
                 <Navigation activeItem={activeItem} isScrolled={true} />
                 {user && (
                   <DropDown

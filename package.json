@@ -11,10 +11,12 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "seed": "tsx prisma/seed.ts",
+    "sync:elastic": "tsx scripts/syncElastic.ts",
     "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.25.1",
+    "@elastic/elasticsearch": "^9.2.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^5.2.2",

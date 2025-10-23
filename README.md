@@ -14,6 +14,7 @@ What makes this project even more exciting? It's fully completed and ready for d
 - Clerk
 - Prisma
 - TypeScript
+- Elasticsearch (optional, with Prisma fallback)
 
 
 ## 🤸 Getting Started
@@ -64,6 +65,7 @@ Open [http://localhost:3000](http://localhost:3000) - you'll see a **DEMO MODE**
 - ✅ Fake payment processing (instant success)
 - ✅ Pre-seeded demo prompts and shops
 - ✅ Full UI testing without external dependencies
+- ✅ Real-time predictive search with automatic Prisma fallback
 
 **Demo Accounts:**
 - **Buyer**: Quick "Login as Buyer" button in header
@@ -132,6 +134,46 @@ npm run dev
 - Update `NEXT_PUBLIC_APP_URL` to your domain
 - Configure webhooks for Stripe
 - Update Clerk allowed domains
+
+---
+
+## 🔍 Search Feature
+
+PromptPlace includes a powerful **real-time predictive search** with two modes:
+
+### 1. **Database Search (Default - Zero Setup)**
+Works out of the box using Prisma. No additional configuration needed.
+
+### 2. **Elasticsearch (Optional - Production Recommended)**
+
+For enhanced search with fuzzy matching and better performance:
+
+```bash
+# Start Elasticsearch (Docker)
+docker run -d --name elasticsearch -p 9200:9200 \
+  -e "discovery.type=single-node" \
+  -e "xpack.security.enabled=false" \
+  docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+
+# Add to .env.local
+ELASTICSEARCH_NODE="http://localhost:9200"
+ELASTICSEARCH_API_KEY=""
+
+# Sync your data
+npm run sync:elastic
+```
+
+**Search Features:**
+- ⚡ 300ms debounced real-time results
+- 🎯 Multi-field search (title, description, category, seller)
+- 🎨 Rich preview cards with images, prices, ratings
+- ⌨️ Full keyboard navigation (↑ ↓ ↵ Esc)
+- 📱 Responsive (mobile overlay, desktop dropdown)
+- 🌓 Theme-aware (light/dark mode)
+
+See [docs/SEARCH_FEATURE.md](docs/SEARCH_FEATURE.md) for detailed documentation.
+
+---
 
 ## 🚨 Contributing
 
