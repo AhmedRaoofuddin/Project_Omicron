@@ -56,7 +56,10 @@ const PromptDetailsPage = ({
       if (publishAbleKey) {
         const amount = Math.round(prompt.price * 100);
         newPaymentIntent({ amount });
-        setStripePromise(loadStripe(publishAbleKey));
+        // Only load Stripe if not using demo key
+        if (!publishAbleKey.includes('demo')) {
+          setStripePromise(loadStripe(publishAbleKey));
+        }
       }
     }
   }, [publishAbleKey, prompt]);

@@ -14,12 +14,13 @@ export const stripePublishableKey = async () => {
 export const stripePaymentIntent = async ({ amount }: { amount: number }) => {
   try {
     if (config.demo) {
-      // Demo mode: return fake payment intent
+      // Demo mode: return fake payment intent with Stripe-like format
       const timestamp = Date.now();
       const random = Math.random().toString(36).substring(2, 15);
+      const id = `pi_${timestamp}_${random}`;
       return {
-        id: `demo_pi_${timestamp}_${random}`,
-        client_secret: `demo_secret_${timestamp}_${random}`,
+        id,
+        client_secret: `${id}_secret_${random}`,
         amount,
         currency: "usd",
         status: "requires_payment_method",

@@ -8,6 +8,48 @@ import Marquee from "react-fast-marquee";
 import { IoCloseOutline } from "react-icons/io5";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
+const DemoCheckout = ({ setOpen, promptData }: { setOpen: (open: boolean) => void; promptData: any }) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleDemoPayment = async () => {
+    setLoading(true);
+    // Simulate payment processing
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setLoading(false);
+    toast.success("🎉 Demo payment successful! In production, this would process a real payment.");
+    setOpen(false);
+    router.push("/my-orders");
+  };
+
+  return (
+    <div className="p-6">
+      <h2 className="text-2xl font-bold text-black mb-4">Demo Checkout</h2>
+      <div className="bg-gray-100 p-4 rounded-lg mb-6">
+        <p className="text-sm text-gray-600 mb-2">
+          <strong>Demo Mode:</strong> This is a simulated checkout. No real payment will be processed.
+        </p>
+        <div className="space-y-2 text-black">
+          <p><strong>Prompt:</strong> {promptData.name}</p>
+          <p><strong>Price:</strong> ${promptData.price}</p>
+        </div>
+      </div>
+      <button
+        onClick={handleDemoPayment}
+        disabled={loading}
+        className="w-full bg-[#16c252] hover:bg-[#14a844] text-white font-semibold py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {loading ? "Processing..." : "Complete Demo Purchase"}
+      </button>
+      <p className="text-xs text-gray-500 mt-4 text-center">
+        In production mode, this would show the Stripe payment form
+      </p>
+    </div>
+  );
+};
 
 const PromptDetailsCard = ({
   promptData,
@@ -140,7 +182,7 @@ const PromptDetailsCard = ({
               />
             </div>
             <div className="w-full">
-              {stripePromise && clientSecret && (
+              {stripePromise && clientSecret ? (
                 <Elements stripe={stripePromise} options={{ clientSecret }}>
                   <CheckoutForm
                     setOpen={setOpen}
@@ -148,7 +190,12 @@ const PromptDetailsCard = ({
                     promptData={promptData}
                   />
                 </Elements>
-              )}
+              ) : clientSecret && !stripePromise ? (
+                <DemoCheckout
+                  setOpen={setOpen}
+                  promptData={promptData}
+                />
+              ) : null}
             </div>
           </div>
         </div>
