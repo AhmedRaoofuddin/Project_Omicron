@@ -38,6 +38,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mobile = false })
     if (!query.trim()) {
       setResults([]);
       setIsOpen(false);
+      setIsLoading(false); // Reset loading when query is empty
       return;
     }
 
@@ -55,7 +56,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mobile = false })
       }
     }, 300);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      // Don't reset loading here - let it show while debouncing
+    };
   }, [query]);
 
   // Handle click outside
@@ -98,6 +102,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mobile = false })
     setQuery("");
     setIsOpen(false);
     setResults([]);
+    setIsLoading(false);
     if (!mobile) setIsExpanded(false);
   };
 
@@ -110,6 +115,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className = "", mobile = false })
     setQuery("");
     setResults([]);
     setIsOpen(false);
+    setIsLoading(false);
     inputRef.current?.focus();
   };
 
