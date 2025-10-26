@@ -2,7 +2,7 @@
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 
-const categories = ["All", "Chatgpt", "Midjourney", "Bard", "Dalle"];
+const categories = ["All", "Design", "Marketing", "Writing", "Development", "Business", "Gaming", "Career"];
 
 type Props = {
   totalPrompts: any;
