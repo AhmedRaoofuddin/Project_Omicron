@@ -47,14 +47,53 @@ export async function GET(req: Request) {
       }
     }
 
-    // Fallback to Prisma database search
-    const prompts = await prismaDb.prompts.findMany({
+    // Fallback to Supabase Full-Text Search (PostgreSQL)
+    try {
+      // Try FTS first (fastest, uses search_vector index)
+      const ftsResults: any[] = await prismaDb.$queryRaw`
+        SELECT 
+          p.id::text as id,
+          p.title,
+          p.description,
+          p.category,
+          p.price::float,
+          p.image_url as image,
+          p.rating::float,
+          s.name as "sellerName",
+          ts_rank(p.search_vector, plainto_tsquery('simple', unaccent(${query}))) as rank
+        FROM prompts p
+        LEFT JOIN shops s ON p.shop_id = s.id
+        WHERE p.search_vector @@ plainto_tsquery('simple', unaccent(${query}))
+          AND p.status = 'Live'
+        ORDER BY rank DESC, p.rating DESC
+        LIMIT 8
+      `;
+
+      if (ftsResults && ftsResults.length > 0) {
+        return NextResponse.json(ftsResults.map(r => ({
+          id: r.id,
+          title: r.title,
+          description: r.description || "",
+          category: r.category || "",
+          price: Number(r.price),
+          image: r.image || "/demo/seed/prompt-placeholder.svg",
+          rating: Number(r.rating),
+          sellerName: r.sellerName || "Unknown"
+        })));
+      }
+    } catch (ftsError) {
+      console.warn("FTS search failed, falling back to ILIKE:", ftsError);
+    }
+
+    // Final fallback: ILIKE search (slower but always works)
+    const prompts = await prismaDb.prompt.findMany({
       where: {
         OR: [
-          { name: { contains: query, mode: "insensitive" } },
+          { title: { contains: query, mode: "insensitive" } },
           { description: { contains: query, mode: "insensitive" } },
           { category: { contains: query, mode: "insensitive" } },
         ],
+        status: "Live",
       },
       include: {
         images: {
@@ -68,39 +107,31 @@ export async function GET(req: Request) {
             rating: true,
           },
         },
+        shop: {
+          select: {
+            name: true,
+          },
+        },
       },
-      take: 6,
+      take: 8,
+      orderBy: [
+        { rating: "desc" },
+        { createdAt: "desc" },
+      ],
     });
 
-    // Get unique seller IDs to fetch shop names
-    const sellerIds = Array.from(new Set(prompts.map((p) => p.sellerId)));
-    const shops = await prismaDb.shops.findMany({
-      where: {
-        userId: { in: sellerIds },
-      },
-      select: {
-        userId: true,
-        name: true,
-      },
-    });
-
-    // Create a map of seller ID to shop name
-    const shopMap = new Map(shops.map((shop) => [shop.userId, shop.name]));
-
-    // Format results to match Elasticsearch structure
+    // Format results to match structure
     const formattedResults = prompts.map((prompt) => ({
       id: prompt.id,
-      title: prompt.name,
+      title: prompt.title,
       description: prompt.description || "",
-      category: prompt.category,
-      price: prompt.price,
-      sellerName: shopMap.get(prompt.sellerId) || "Unknown",
-      image: prompt.images[0]?.url || "/demo/seed/prompt-placeholder.svg",
-      rating:
-        prompt.reviews.length > 0
-          ? prompt.reviews.reduce((sum, r) => sum + r.rating, 0) /
-            prompt.reviews.length
-          : 0,
+      category: prompt.category || "",
+      price: Number(prompt.price),
+      sellerName: prompt.shop?.name || "Unknown",
+      image: prompt.images[0]?.url || prompt.imageUrl || "/demo/seed/prompt-placeholder.svg",
+      rating: prompt.reviews.length > 0
+        ? prompt.reviews.reduce((sum, r) => sum + r.rating, 0) / prompt.reviews.length
+        : prompt.rating,
     }));
 
     return NextResponse.json(formattedResults);
