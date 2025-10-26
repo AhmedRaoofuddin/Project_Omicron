@@ -48,15 +48,8 @@ CREATE TABLE IF NOT EXISTS prompts (
   status TEXT DEFAULT 'Live',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
-  -- Generated search vector for instant full-text search
-  search_vector TSVECTOR GENERATED ALWAYS AS (
-    to_tsvector('simple', unaccent(
-      coalesce(title,'') || ' ' || 
-      coalesce(description,'') || ' ' || 
-      coalesce(category,'') || ' ' ||
-      coalesce(tags,'')
-    ))
-  ) STORED
+  -- Search vector column (updated via trigger)
+  search_vector TSVECTOR
 );
 
 -- Images table
@@ -162,10 +155,29 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Function to update search_vector for prompts
+CREATE OR REPLACE FUNCTION update_prompts_search_vector()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.search_vector := to_tsvector('english',
+      coalesce(NEW.title, '') || ' ' ||
+      coalesce(NEW.description, '') || ' ' ||
+      coalesce(NEW.category, '') || ' ' ||
+      coalesce(NEW.tags, '')
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Triggers to auto-update updated_at
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_shops_updated_at BEFORE UPDATE ON shops FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_prompts_updated_at BEFORE UPDATE ON prompts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Trigger to auto-update search_vector for prompts
+CREATE TRIGGER update_prompts_search_vector_trigger
+BEFORE INSERT OR UPDATE ON prompts
+FOR EACH ROW EXECUTE FUNCTION update_prompts_search_vector();
 
 -- Success message
 SELECT 'Database schema created successfully!' AS message;
