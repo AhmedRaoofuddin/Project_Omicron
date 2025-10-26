@@ -167,6 +167,10 @@ BEFORE UPDATE OF title, description, category, tags ON prompts
 FOR EACH ROW EXECUTE FUNCTION trg_prompts_search_vector();
 
 -- Triggers to auto-update updated_at
+DROP TRIGGER IF EXISTS update_users_updated_at ON users;
+DROP TRIGGER IF EXISTS update_shops_updated_at ON shops;
+DROP TRIGGER IF EXISTS update_prompts_updated_at ON prompts;
+
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_shops_updated_at BEFORE UPDATE ON shops FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_prompts_updated_at BEFORE UPDATE ON prompts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
