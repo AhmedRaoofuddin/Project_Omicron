@@ -13,35 +13,38 @@ export async function GET(req: NextRequest, { params }: { params: any }) {
       });
     }
 
-    const prompt: any = await prisma.prompts.findUnique({
+    // Updated to use new Prisma schema
+    const prompt: any = await prisma.prompt.findUnique({
       include: {
         orders: true,
         images: true,
-        reviews: true,
-        promptUrl: true,
+        reviews: {
+          include: {
+            user: true, // Include user relation directly
+          },
+        },
+        promptFiles: true, // Updated from promptUrl
+        shop: true, // Include shop relation directly
       },
       where: {
         id: promptId,
       },
     });
 
-    if (prompt) {
-      const shop = await prisma.shops.findUnique({
-        where: {
-          userId: prompt?.sellerId,
-        },
-      });
-      prompt.shop = shop;
+    if (!prompt) {
+      return new NextResponse("Prompt not found", { status: 404 });
     }
 
-    if (prompt?.reviews) {
-      for (const review of prompt?.reviews) {
-        const user = await clerkClient.users.getUser(review.userId);
-        review.user = user;
-      }
-    }
+    // Transform to match expected format
+    const transformedPrompt = {
+      ...prompt,
+      name: prompt.title,
+      price: Number(prompt.price),
+      rating: Number(prompt.rating),
+      sellerId: prompt.shopId,
+    };
 
-    return NextResponse.json(prompt);
+    return NextResponse.json(transformedPrompt);
   } catch (error) {
     console.log("get prompts error", error);
     return new NextResponse("Internal Error", { status: 500 });

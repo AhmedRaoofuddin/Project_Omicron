@@ -13,30 +13,32 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    const prompt: any = await prisma.prompts.findMany({
+    // Updated to use new Prisma schema
+    const prompts: any = await prisma.prompt.findMany({
       include: {
         orders: true,
         images: true,
         reviews: true,
-        promptUrl: true,
+        promptFiles: true, // Updated from promptUrl
+        shop: true, // Include shop relation directly
       },
       where: {
         category: promptCategory,
+        status: "Live",
       },
+      take: 6, // Limit related prompts
     });
 
-    for (const singlePrompt of prompt) {
-      if (singlePrompt) {
-        const shop = await prisma.shops.findUnique({
-          where: {
-            userId: singlePrompt?.sellerId,
-          },
-        });
-        singlePrompt.shop = shop;
-      }
-    }
+    // Transform to match expected format
+    const transformedPrompts = prompts.map((p: any) => ({
+      ...p,
+      name: p.title,
+      price: Number(p.price),
+      rating: Number(p.rating),
+      sellerId: p.shopId,
+    }));
 
-    return NextResponse.json(prompt);
+    return NextResponse.json(transformedPrompts);
   } catch (error) {
     console.log("get prompts error", error);
     return new NextResponse("Internal Error", { status: 500 });

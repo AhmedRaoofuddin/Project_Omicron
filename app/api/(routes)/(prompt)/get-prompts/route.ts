@@ -9,12 +9,14 @@ export async function GET(req: NextRequest) {
 
     const pageSize = 8;
 
-    const prompts: any = await prisma.prompts.findMany({
+    // Updated to use new Prisma schema (prompt instead of prompts)
+    const prompts: any = await prisma.prompt.findMany({
       include: {
         orders: true,
         images: true,
         reviews: true,
-        promptUrl: true,
+        promptFiles: true, // Updated from promptUrl to promptFiles
+        shop: true, // Include shop relation directly
       },
       where: {
         status: "Live",
@@ -26,36 +28,37 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const totalPrompts: any = await prisma.prompts.findMany({
+    const totalPrompts: any = await prisma.prompt.findMany({
       where: {
         status: "Live",
       },
       include: {
         images: true,
+        shop: true, // Include shop relation directly
       },
     });
 
-    if (prompts) {
-      for (const prompt of prompts) {
-        const shop = await prisma.shops.findUnique({
-          where: {
-            userId: prompt.sellerId,
-          },
-        });
-        prompt.shop = shop;
-      }
+    // Transform to match expected format (MongoDB -> PostgreSQL)
+    const transformedPrompts = prompts.map((p: any) => ({
+      ...p,
+      name: p.title, // Map title to name for backward compatibility
+      price: Number(p.price),
+      rating: Number(p.rating),
+      sellerId: p.shopId, // Map shopId to sellerId for backward compatibility
+    }));
 
-      for (const prompt of totalPrompts) {
-        const shop = await prisma.shops.findUnique({
-          where: {
-            userId: prompt.sellerId,
-          },
-        });
-        prompt.shop = shop;
-      }
-    }
+    const transformedTotalPrompts = totalPrompts.map((p: any) => ({
+      ...p,
+      name: p.title,
+      price: Number(p.price),
+      rating: Number(p.rating),
+      sellerId: p.shopId,
+    }));
 
-    return NextResponse.json({ prompts, totalPrompts });
+    return NextResponse.json({ 
+      prompts: transformedPrompts, 
+      totalPrompts: transformedTotalPrompts 
+    });
   } catch (error) {
     console.log("get prompts error", error);
     return new NextResponse("Internal Error", { status: 500 });
