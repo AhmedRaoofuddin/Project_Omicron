@@ -32,7 +32,7 @@ export default function RootLayout({
   if (config.demo) {
     return (
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.variable} ${monserrat.variable}`}>
+        <body className={`${inter.variable} ${monserrat.variable}`} suppressHydrationWarning>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
             <AuthProvider>
               <Provider>
@@ -51,7 +51,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.variable} ${monserrat.variable}`}>
+        <body className={`${inter.variable} ${monserrat.variable}`} suppressHydrationWarning>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
             <Provider>
               <Toaster position="top-center" reverseOrder={false} />
