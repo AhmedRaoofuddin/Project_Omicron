@@ -3,107 +3,164 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Shops {
-  id               String      @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
-  description      String
-  shopProductsType String
-  avatar           String
-  ratings          Float       @default(0)
-  totalSales       Int         @default(0)
-  allProducts      Int         @default(0)
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
-  userId           String      @unique
-  bank             Banks?
-  withdraws        withdraws[]
+// Users table (Clerk authentication)
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  clerkId   String   @unique @map("clerk_id")
+  name      String?
+  email     String?
+  avatarUrl String?  @map("avatar_url")
+  role      String   @default("buyer")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  shops       Shop[]
+  orders      Order[]
+  reviews     Review[]
+  banks       Bank[]
+  withdrawals Withdrawal[]
+
+  @@map("users")
 }
 
-model Images {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  public_id String
+// Shops table
+model Shop {
+  id          String   @id @default(uuid()) @db.Uuid
+  ownerId     String   @map("owner_id") @db.Uuid
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name        String
+  bio         String?
+  avatarUrl   String?  @map("avatar_url")
+  totalSales  Int      @default(0) @map("total_sales")
+  allProducts Int      @default(0) @map("all_products")
+  ratings     Float    @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  prompts Prompt[]
+
+  @@index([ownerId])
+  @@map("shops")
+}
+
+// Prompts table (with FTS support via trigger)
+model Prompt {
+  id               String   @id @default(uuid()) @db.Uuid
+  shopId           String   @map("shop_id") @db.Uuid
+  shop             Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  title            String
+  shortDescription String?  @map("short_description")
+  description      String?
+  category         String?
+  tags             String?
+  price            Decimal  @db.Decimal(10, 2)
+  estimatedPrice   Decimal? @map("estimated_price") @db.Decimal(10, 2)
+  imageUrl         String?  @map("image_url")
+  rating           Float    @default(0)
+  status           String   @default("Live")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  
+  // Search vector managed by trigger (not directly accessible via Prisma)
+  // searchVector Unsupported("tsvector")?
+  
+  images      Image[]
+  promptFiles PromptFile[]
+  orders      Order[]
+  reviews     Review[]
+
+  @@index([shopId])
+  @@index([category])
+  @@index([status])
+  @@map("prompts")
+}
+
+// Images table
+model Image {
+  id        String   @id @default(uuid()) @db.Uuid
+  promptId  String   @map("prompt_id") @db.Uuid
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
   url       String
-  Prompts   Prompts? @relation(fields: [promptId], references: [id])
-  promptId  String?  @db.ObjectId
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([promptId])
+  @@map("images")
 }
 
-model Reviews {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  promptId  String   @db.ObjectId
-  userId    String
-  rating    Float
-  comment   String
-  createdAt DateTime @default(now())
-  prompts   Prompts  @relation(fields: [promptId], references: [id])
+// Prompt files table
+model PromptFile {
+  id         String   @id @default(uuid()) @db.Uuid
+  promptId   String   @map("prompt_id") @db.Uuid
+  prompt     Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  url        String
+  promptText String?  @map("prompt_text")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([promptId])
+  @@map("prompt_files")
 }
 
-model PromptFiles {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  public_id String
-  url       String
-  Prompts   Prompts? @relation(fields: [promptsId], references: [id])
-  promptsId String?  @db.ObjectId
+// Orders table
+model Order {
+  id            String   @id @default(uuid()) @db.Uuid
+  promptId      String   @map("prompt_id") @db.Uuid
+  prompt        Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  buyerId       String   @map("buyer_id") @db.Uuid
+  buyer         User     @relation(fields: [buyerId], references: [id], onDelete: Cascade)
+  paymentId     String?  @map("payment_id")
+  paymentMethod String   @default("stripe") @map("payment_method")
+  amount        Decimal  @db.Decimal(10, 2)
+  status        String   @default("paid")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([buyerId])
+  @@index([promptId])
+  @@map("orders")
 }
 
-enum promptStatus {
-  Pending
-  Live
-  Declined
+// Reviews table
+model Review {
+  id        String   @id @default(uuid()) @db.Uuid
+  promptId  String   @map("prompt_id") @db.Uuid
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([promptId])
+  @@index([userId])
+  @@map("reviews")
 }
 
-model Orders {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId         String
-  promptId       String   @db.ObjectId
-  prompt         Prompts  @relation(fields: [promptId], references: [id])
-  payment_method String
-  payment_id     String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+// Banks table
+model Bank {
+  id            String   @id @default(uuid()) @db.Uuid
+  sellerId      String   @map("seller_id") @db.Uuid
+  seller        User     @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  bankName      String?  @map("bank_name")
+  accountNumber String?  @map("account_number")
+  routingNumber String?  @map("routing_number")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@index([sellerId])
+  @@map("banks")
 }
 
-model Prompts {
-  id               String        @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
-  shortDescription String
-  description      String
-  images           Images[]
-  estimatedPrice   Float?
-  price            Float
-  category         String
-  tags             String
-  rating           Float         @default(0)
-  reviews          Reviews[]
-  promptUrl        PromptFiles[]
-  sellerId         String
-  orders           Orders[]
-  status           promptStatus  @default(Pending)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-}
+// Withdrawals table
+model Withdrawal {
+  id        String   @id @default(uuid()) @db.Uuid
+  sellerId  String   @map("seller_id") @db.Uuid
+  seller    User     @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  amount    Decimal  @db.Decimal(10, 2)
+  status    String   @default("pending")
+  createdAt DateTime @default(now()) @map("created_at")
 
-model Banks {
-  id                  String @id @default(auto()) @map("_id") @db.ObjectId
-  bank_name           String
-  bank_address        String
-  sellerId            String @unique @db.ObjectId
-  bank                Shops  @relation(fields: [sellerId], references: [id])
-  account_holder_name String
-  account_number      Float
-  routing_number      Float
-  swift_code          String
-}
-
-model withdraws {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  sellerId  String   @db.ObjectId
-  shop      Shops    @relation(fields: [sellerId], references: [id])
-  amount    Float
-  status    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@index([sellerId])
+  @@map("withdrawals")
 }

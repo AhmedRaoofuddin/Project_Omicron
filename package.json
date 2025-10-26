@@ -11,6 +11,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "seed": "tsx prisma/seed.ts",
+    "backfill": "tsx scripts/backfill-to-supabase.ts",
     "sync:elastic": "tsx scripts/syncElastic.ts",
     "postinstall": "prisma generate"
   },
@@ -32,6 +33,7 @@
     "clsx": "^1.2.1",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.546.0",
+    "mongodb": "^6.20.0",
     "next": "latest",
     "next-themes": "^0.2.1",
     "pg": "^8.16.3",
